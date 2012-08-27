@@ -17,6 +17,7 @@ function load_nivo_scripts_function(){
     wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
     wp_enqueue_script( 'jquery' );
 
+
     wp_deregister_script( 'nivo' );
     wp_register_script( 'nivo', plugins_url('js/jquery.nivo.slider.pack.js', __FILE__ ));
     wp_enqueue_script( 'nivo' );
@@ -45,4 +46,40 @@ function show_nivo_slider(){
             </div>
         </div>
     <?php
+}
+
+
+
+
+if(is_admin()){
+    add_action('admin_menu', 'admin_nivo_function');
+
+
+}
+
+function admin_nivo_function(){
+
+
+    add_menu_page( 'Nivo Slider', 'Nivo Slider', 0, 'really-simple-nivo-slider', 'admin_nivo_page' );
+}
+
+function admin_nivo_page(){
+
+    wp_deregister_script( 'jquery-ui' );
+    wp_register_script( 'jquery-ui', plugins_url('libs/jquery-ui/js/jquery-ui-1.8.23.custom.min.js', __FILE__ ));
+    wp_enqueue_script( 'jquery-ui' );
+
+
+    wp_register_style( 'jquery-ui-style', plugins_url('libs/jquery-ui/css/jquery-ui-1.8.23.custom.css', __FILE__ ), array(), '20120208', 'all' );
+    wp_enqueue_style( 'jquery-ui-style' );
+
+    wp_deregister_script( 'admin-nivo-slider' );
+    wp_register_script( 'admin-nivo-slider', plugins_url('js/admin.js', __FILE__ ));
+    wp_enqueue_script( 'admin-nivo-slider' );
+
+
+    ob_start();
+    include 'views/admin/panel.php';
+    $page = ob_get_clean();
+    echo $page;
 }
